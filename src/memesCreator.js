@@ -7,10 +7,20 @@ export const MemesCreator=(props)=>{ //console.log("props",props);
     const [memesIndex,setMemesIndex]=useState(0);
     const [caption,setCaption]=useState([]);
 
+    const shuffleMemes = (array) => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * i);
+            const temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
+        }
+    };
+
     useEffect(()=>{
         fetch('https://api.imgflip.com/get_memes')
             .then(res=>res.json())
-            .then(data =>{setMemes(data.data.memes.slice(0,9));}); //setMemes({memes:data.data.memes.slice(0,9),
+            //.then(data =>{setMemes(data.data.memes.slice(0,9));});//ok //setMemes({memes:data.data.memes.slice(0,9),
+            .then(data =>{shuffleMemes(data.data.memes);setMemes(data.data.memes);});
     },[]);
     const jumpToNext=()=>{
         if(memesIndex===memes.length-1){setMemesIndex(0);}
